@@ -1,0 +1,9 @@
+[molCardSimpleVerticalWrapperCard] picture{
+    display: block;
+    position: relative;
+    min-height: 200px;
+}
+[molCardSimpleVerticalWrapperCard]{
+    overflow:hidden;
+    height: 100%;
+}

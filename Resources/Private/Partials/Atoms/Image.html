@@ -1,0 +1,85 @@
+<fluid
+        data-namespace-typo3-fluid="true"
+        xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+>
+    <f:comment>
+        <!--
+        data{
+            image: imageObject (required)
+            loading: 'lazy' | 'eager'
+            config: json (imageconfig like defaults below) (should have!)
+            alt: string
+            title: string
+            draggable: true | false
+            treatIdAsReference: boolean
+            absolute: true | false (absolute image path?)
+            additionalClasses: string
+            additionalAttributes: string
+            style: string (style)
+        }
+        -->
+    </f:comment>
+
+    <f:if condition="{data}">
+        <f:if condition="!{data.treatIdAsReference}">
+            <f:variable name="treatIdAsReference" value="0"/>
+        </f:if>
+        <f:variable name="fileExtension" value='webp'/>
+        <f:if condition="{data.fileExtension}">
+            <f:variable name="fileExtension" value='{data.fileExtension}'/>
+        </f:if>
+        <f:variable name="absolute" value='0'/>
+        <f:if condition="{data.absolute}">
+            <f:variable name="absolute" value='{data.absolute}'/>
+        </f:if>
+
+        <f:variable name="loading" value='loading=lazy'/>
+        <f:if condition="{data.loading}">
+            <f:variable name="loading" value='loading={data.loading}'/>
+        </f:if>
+        <f:if condition="{data.loading} == 'false'">
+            <f:variable name="loading" value='loading=false'/>
+        </f:if>
+
+        <f:variable name="image" value="{data.image}"/>
+        <f:variable name="config" value="{data.config}"/>
+        <f:if condition="!{config}">
+            <f:variable name="config" value="{
+            300:{w:400,cropVariant:'mobile'},
+            400:{w:400,cropVariant:'mobile'},
+            500:{w:500,cropVariant:'mobile'},
+            600:{w:500,cropVariant:'mobile'},
+            1000:{w:950,cropVariant:'default'},
+            1200:{w:1200,cropVariant:'default'},
+            1400:{w:1400,cropVariant:'default'},
+            1600:{w:1600,cropVariant:'default'}
+        }"/>
+        </f:if>
+
+        <f:if condition="{data.image}">
+            <picture {f:if(condition:data.additionalAttributes,then:data.additionalAttributes)}>
+                <f:for each="{config}" as="dims" key="breakpoint" iteration="i">
+                    <f:variable name="fileExtension" value="jpeg"/>
+                    <f:if condition="{data.image.properties} && {data.image.properties.extension}">
+                        <f:variable name="fileExtension" value="{data.image.properties.extension}"/>
+                    </f:if>
+                    <source media="(min-width:{breakpoint}px)" srcset="{f:uri.image(fileExtension:fileExtension,image: image, cropVariant: dims.cropVariant, minWidth: dims.w, width: dims.w, height: dims.h, absolute:absolute)}" type="image/{fileExtension}">
+                    <f:comment>
+                        <!-- webp current not, because solved with ext: plan2net/webp
+                          <source media="(min-width:{breakpoint}px)" srcset="{f:uri.image(fileExtension:'webp',image: image, cropVariant: dims.cropVariant, minWidth: dims.w, width: dims.w, height: dims.h, absolute:absolute)}" type="image/webp">
+                         -->
+                    </f:comment>
+                    <f:if condition="{i.isLast}">
+                        <f:variable name="defaultSrc" value="{f:uri.image(fileExtension:'jpeg', image: image, cropVariant: dims.cropVariant, minWidth: dims.w, width: dims.w, height: dims.h, absolute:absolute)}"/>
+                    </f:if>
+                    <f:if condition="{i.isLast}">
+                        <f:image image="{image}" alt="{data.alt}" title="{data.title}" width="{dims.w}" height="{dims.h}"
+                                 class="{f:if(condition:data.additionalClasses,then:data.additionalClasses)}"
+                                 additionalAttributes="{style:data.style,draggable:data.draggable}"/>
+                    </f:if>
+                </f:for>
+            </picture>
+        </f:if>
+
+    </f:if>
+</fluid>

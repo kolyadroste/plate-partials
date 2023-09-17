@@ -1,0 +1,10 @@
+page{
+    includeJS{
+        container_query_polyfill = EXT:plate_atomic_assets/Resources/Public/node_modules/container-query-polyfill/dist/container-query-polyfill.modern.js
+    }
+}
+lib.contentElement{
+    partialRootPaths{
+        1684544902 = EXT:plate_atomic_assets/Resources/Private/Partials/
+    }
+}

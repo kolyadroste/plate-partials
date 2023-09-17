@@ -1,0 +1,28 @@
+<html
+        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        data-namespace-typo3-fluid="true"
+>
+    <f:comment><!--
+        data{
+           copyright: (string)
+           positionHorizontal: (string) (left, right)
+           positionVertical: (string) (top, bottom)
+        }
+    --></f:comment>
+    <f:if condition="{data}">
+        <f:if condition="!{data.copyright}">
+            <f:variable name="copyright" value="{f:translate(extensionName:'plate_atomic_assets',id:'copyright_default')}"/>
+        </f:if>
+        <f:if condition="!{data.positionHorizontal}">
+            <f:variable name="positionHorizontal" value="right"/>
+        </f:if>
+        <f:if condition="!{data.positionVertical}">
+            <f:variable name="positionVertical" value="top"/>
+        </f:if>
+        <f:if condition="{data.copyright}">
+            <f:asset.script identifier="atomic-copyright" href="EXT:plate_atomic_assets/Resources/Public/Webcomponents/atomic-copyright.js" />
+            <atomic-copyright label="{data.copyright}" posVertical="{positionHorizontal}" posHorizontal="{positionVertical}"></atomic-copyright>
+        </f:if>
+    </f:if>
+
+</html>

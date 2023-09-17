@@ -1,0 +1,64 @@
+<fluid
+        data-namespace-typo3-fluid="true"
+        xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+>
+    <f:comment>
+        <!--
+        data{
+            image: imageObject (required)
+            loading: 'lazy' | 'eager'
+            config: json (imageconfig like defaults below) (should have!)
+            alt: string
+            title: string
+            treatIdAsReference: boolean
+            absolute: true | false (absolute image path?)
+            additionalClasses: string
+            additionalAttributes: string
+            style: string (style)
+        }
+        -->
+    </f:comment>
+
+    <f:if condition="{data}">
+        <f:if condition="!{data.treatIdAsReference}">
+            <f:variable name="treatIdAsReference" value="0"/>
+        </f:if>
+        <f:variable name="fileExtension" value='webp'/>
+        <f:if condition="{data.fileExtension}">
+            <f:variable name="fileExtension" value='{data.fileExtension}'/>
+        </f:if>
+        <f:variable name="absolute" value='0'/>
+        <f:if condition="{data.absolute}">
+            <f:variable name="absolute" value='{data.absolute}'/>
+        </f:if>
+
+        <f:variable name="loading" value='loading="lazy"'/>
+        <f:if condition="{data.loading}">
+            <f:variable name="loading" value='loading="{data.loading}"'/>
+        </f:if>
+        <f:variable name="image" value="{data.image}"/>
+        <f:variable name="config" value="{data.config}"/>
+        <f:if condition="!{config}">
+            <f:variable name="config" value="{
+            300:{w:400,cropVariant:'mobile'},
+            400:{w:400,cropVariant:'mobile'},
+            500:{w:500,cropVariant:'mobile'},
+            600:{w:500,cropVariant:'mobile'},
+            1000:{w:950,cropVariant:'default'},
+            1200:{w:1200,cropVariant:'default'},
+            1400:{w:1400,cropVariant:'default'},
+            1600:{w:1600,cropVariant:'default'}
+        }"/>
+        </f:if>
+
+        <f:if condition="{data.image}">
+            <f:for each="{data.config}" as="dims" key="breakpoint" iteration="i">
+                <f:if condition="{i.isFirst}">
+                    <f:variable name="defaultSrc" value="{f:uri.image(image: data.image,fileExtension:fileExtension, cropVariant: dims.cropVariant, minWidth: dims.w, width: dims.w, height: dims.h, absolute:absolute)}"/>
+                </f:if>
+                <f:variable name="srcSet" value="{srcSet} {f:uri.image(image: data.image,fileExtension:fileExtension, cropVariant: dims.cropVariant, minWidth: dims.w, width: dims.w, height: dims.h, absolute:absolute)} {breakpoint}w,"/>
+            </f:for>
+            <img {loading} alt="{data.alt}" title="{data.title}"  style="{style}" src="{defaultSrc}" srcset="{srcSet}" {f:if(condition:data.additionalAttributes,then:data.additionalAttributes)} class="{f:if(condition:data.additionalClasses,then:data.additionalClasses)}">
+        </f:if>
+    </f:if>
+</fluid>

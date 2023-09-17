@@ -1,0 +1,22 @@
+<html
+        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        data-namespace-typo3-fluid="true"
+>
+    <f:comment>
+        <!--
+            data{
+                startdate (timestamp)
+                enddate (timestamp)
+                format (dateformat)
+            }
+         -->
+    </f:comment>
+    <f:if condition="{startDate}">
+        <span dateTimeInfo class="d-flex">
+            <span class="date"><f:format.date format="d.m.Y">{startDate}</f:format.date><f:if condition="{startDate -> f:format.date(format:'H')} > 0">, <span class="time"><f:format.date format="H:i">{startDate}</f:format.date></span></f:if></span>
+            <f:if condition="{endDate}">
+                bis <span class="date"><f:format.date format="d.m.Y">{endDate}</f:format.date></span>
+            </f:if>
+        </span>
+    </f:if>
+</html>

@@ -1,0 +1,37 @@
+<fluid
+        data-namespace-typo3-fluid="true"
+        xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+>
+    <f:comment>
+        {
+            data:{
+                icon: 'string',
+                width: 'int',
+                height: 'int',
+                isFullColor: 'bool',
+                title: 'string',
+                alt: 'string'
+            }
+        }
+    </f:comment>
+    <f:if condition="{data} && {data.icon}">
+        <f:variable name="iconUri" value="{f:uri.resource(path:data.icon)}"/>
+
+        <figure style="margin:0 5px">
+            <f:variable name="width" value="20"/>
+            <f:if condition="{data.width}"><f:variable name="width" value="{data.width}"/></f:if>
+            <f:variable name="height" value="20"/>
+            <f:if condition="{data.height}"><f:variable name="height" value="{data.height}"/></f:if>
+
+            <f:if condition="{data.isFullColor}">
+                <f:then>
+                    <f:image src="{iconUri}" width="{data.width}" height="{data.height}" title="{f:if(condition:data.title,then:data.title,else:'Icon')}" alt="{f:if(condition:data.alt,then:data.alt,else:'Icon')}" />
+                </f:then>
+                <f:else>
+                    <f:variable name="dimensions" value="{f:if(condition:width,then:'width:{width}px;')}{f:if(condition:height,then:'height:{height}px;')}"/>
+                    <div class="mask-svg" aria-label="{f:if(condition:data.title,then:data.title,else:'Icon')}" style="{f:if(condition:dimensions,then:dimensions)} -webkit-mask: url({iconUri}) no-repeat center / contain;"></div>
+                </f:else>
+            </f:if>
+        </figure>
+    </f:if>
+</fluid>

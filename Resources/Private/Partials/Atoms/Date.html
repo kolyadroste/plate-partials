@@ -1,0 +1,22 @@
+<html
+        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        data-namespace-typo3-fluid="true"
+>
+<f:comment>
+    <!--
+        data{
+            date (timestamp) *required
+            format (dateformat)
+        }
+     -->
+</f:comment>
+<f:if condition="{data} && {data.date}">
+    <f:variable name="format" value="d.F Y"/>
+    <f:if condition="{data.format}">
+        <f:variable name="format" value="{data.format}"/>
+    </f:if>
+    <span dateTimeInfo class="d-flex">
+            <span class="date"><f:format.date format="{format}">{data.date}</f:format.date></span>
+    </span>
+</f:if>
+</html>

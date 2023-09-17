@@ -1,0 +1,191 @@
+<fluid
+        data-namespace-typo3-fluid="true"
+        xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+>
+    <f:comment>
+        data:{
+            nav: (array),
+            homeLink: uri (string),
+            homeLinkIsIcon: [0,1]] (bool),
+            homeIcon: uri (string),
+            dropdownIcon: uri (string),
+            l0ButtonType: [button, transparent] (string),
+            l1ButtonType: [button, transparent] (string),
+            showL1Thumbnails: [0,1] (bool)
+        }
+    </f:comment>
+    <f:variable name="atomicAssets" value="EXT:plate_atomic_assets/Resources/Public"/>
+    <f:variable name="level" value="0"/>
+    <f:variable name="public" value="EXT:plate_layoutces/Resources/Public"/>
+    <f:asset.script identifier="atomic.dropdown" type="module" src="{atomicAssets}/Webcomponents/Dist/atomic-dropdown.js"/>
+    <f:asset.script identifier="atomic.button" type="module" src="{atomicAssets}/Webcomponents/Dist/atomic-button.min.js"/>
+    <f:asset.css identifier="bs.utilities.base"  href="{atomicAssets}/atomic-bootstrap/Dist/utilities/utilities.base.css" priority="1"/>
+    <f:asset.css identifier="bs.plate-nav"  href="{public}/Styles/Components/plate-nav.css" priority="1"/>
+    <nav class="pl-nav d-flex">
+        <ul class="m-0 p-0">
+            <f:if condition="{data.homeLink}">
+                <f:if condition="{data.homeLinkIsIcon}">
+                    <f:then>
+                        <li class="d-flex align-content-center pl-nav-entry -l0 -homelink -first">
+                            <f:render section="IconLink" arguments="{data:data,link:data.homeLink, uid:0, level:0, title:'Home', icon:data.homeIcon, iconFullColor:data.homeIconFullColor}"/>
+                        </li>
+                    </f:then>
+                    <f:else>
+                        <li class="d-flex align-content-center pl-nav-entry -l0 -homelink -first">
+                            <f:render section="Link" arguments="{data:data,link:data.homeLink, uid:0, level:0, title:'Home'}"/>
+                        </li>
+                    </f:else>
+                </f:if>
+            </f:if>
+            <f:for each="{data.nav}" as="entry" iteration="i">
+                <f:variable name="title" value="{entry.title}"/>
+                <f:if condition="{entry.nav_title}">
+                    <f:variable name="title" value="{entry.nav_title}"/>
+                </f:if>
+
+                <f:render section="Entry" arguments="{_all}"/>
+            </f:for>
+        </ul>
+    </nav>
+
+    <f:section name="Entry">
+
+        <f:if condition="{i.isFirst} && !{data.homeLink}">
+            <f:variable name="addClass" value="-first"/>
+        </f:if>
+        <f:if condition="{i.isLast}">
+            <f:variable name="addClass" value="-last"/>
+        </f:if>
+        <li class="pl-nav-entry -l{level} {addClass} ">
+            <f:if condition="{entry.subpages}">
+                <f:then>
+                   <f:render section="Dropdown" arguments="{_all}"/>
+                </f:then>
+                <f:else>
+                    <f:render section="Link" arguments="{data:data,uid:entry.uid, level:level, title:title, icon:entry.tx_bwicons_icon, iconFullColor:entry.plate_icon_fullcolor}"/>
+                </f:else>
+            </f:if>
+        </li>
+    </f:section>
+
+    <f:section name="Dropdown">
+        <f:if condition="{i.isLast}">
+            <f:variable name="open-state" value="openLeft"/>
+        </f:if>
+        <f:comment>
+            <f:variable name="icon" value="{f:uri.resource(path:'EXT:core/Resources/Public/Icons/T3Icons/svgs/actions/actions-chevron-down.svg')}"/>
+        </f:comment>
+        <f:if condition="{entry.subpages->f:count() > 6}">
+            <f:variable name="isMegamenu" value="1"/>
+        </f:if>
+        <atomic-dropdown openOnHover {open-state} style="{f:if(condition:isMegamenu,then:'--atomic-dropdown-slidewrapper-translatex:-50%;')}">
+            <f:render section="Link" arguments="{data:data,uid:entry.uid, level:level, title:title, linkAfterIcon:data.dropdownIcon}"/>
+            <f:if condition="{isMegamenu}">
+                <f:then>
+                    <f:render section="SubpagesGrid" arguments="{_all}"/>
+                </f:then>
+                <f:else>
+                    <f:render section="Subpages" arguments="{_all}"/>
+                </f:else>
+            </f:if>
+        </atomic-dropdown>
+    </f:section>
+
+    <f:section name="Subpages">
+        <f:variable name="level" value="{level + 1}"/>
+        <ul class="pl-subnav -l{level} p-0 mb-0">
+            <f:for each="{entry.subpages}" as="entry">
+                <f:variable name="title" value="{entry.title}"/>
+                <f:if condition="{entry.nav_title}"><f:variable name="title" value="{entry.nav_title}"/></f:if>
+                <li class="pl-nav-entry -l{level}">
+                    <f:render section="Link" arguments="{data:data,uid:entry.uid, level:level, title:title, icon:entry.tx_bwicons_icon, iconFullColor:entry.plate_icon_fullcolor}"/>
+                </li>
+            </f:for>
+        </ul>
+    </f:section>
+
+    <f:section name="SubpagesGrid">
+        <f:variable name="level" value="{level + 1}"/>
+        <f:asset.css identifier="bs.grid-flex" href="EXT:plate_atomic_assets/Resources/Public/atomic-bootstrap/Dist/components/grid-flex.css"/>
+        <f:variable name="numSubpages" value="{entry.subpages->f:count()}"/>
+        <f:variable name="numSubpagesPerColumn" value="{numSubpages / 2}"/>
+        <f:variable name="numSubpagesPerColumn" value="{numSubpagesPerColumn->f:format.number(decimals:0)}"/>
+
+        <div class="row -megamenu" style="width:500px">
+            <div class="col col-6">
+                <ul class="pl-subnav-grid-1 p-0">
+                    <f:for each="{entry.subpages}" as="item" iteration="num">
+                        <f:variable name="title" value="{item.title}"/>
+                        <f:if condition="{item.nav_title}"><f:variable name="title" value="{item.nav_title}"/></f:if>
+                        <f:if condition="{num.cycle} <= {numSubpagesPerColumn}">
+                            <f:render section="Link" arguments="{data:data,item:item,uid:item.uid, level:level, title:title, icon:item.tx_bwicons_icon, iconFullColor:item.plate_icon_fullcolor}"/>
+                        </f:if>
+                    </f:for>
+                </ul>
+            </div>
+            <div class="col col-6">
+                <ul class="pl-subnav-grid-2 p-0">
+                    <f:for each="{entry.subpages}" as="item" iteration="num">
+                        <f:variable name="title" value="{item.title}"/>
+                        <f:if condition="{item.nav_title}"><f:variable name="title" value="{item.nav_title}"/></f:if>
+                        <f:if condition="{num.cycle} > {numSubpagesPerColumn}">
+                            <f:render section="Link" arguments="{data:data,item:item,uid:item.uid, level:level, title:title, icon:item.tx_bwicons_icon, iconFullColor:item.plate_icon_fullcolor}"/>
+                        </f:if>
+                    </f:for>
+                </ul>
+            </div>
+        </div>
+    </f:section>
+
+    <f:section name="Link">
+        <f:variable name="link" value="{f:uri.page(pageUid:uid)}"/>
+        <a href="{link}" class="pl-nav-link -l{level} d-block" slot="click-element" title="{link}">
+            <atomic-button {data.l{level}ButtonType}>
+                <span class="{f:if(condition:'{level}==0', then:'text-nowrap')}">{title}</span>
+                <f:if condition="{data.showL1Thumbnails}">
+                    <f:then>
+                        <f:comment>{item.image}</f:comment>
+                        <f:if condition="{item.image} && {item.image.0}">
+                            <span slot="before">
+                                <f:image image="{item.image.0}" width="70"/>
+                            </span>
+                        </f:if>
+                    </f:then>
+                    <f:else>
+                        <f:if condition="{icon}">
+                            <span slot="before">
+                                <f:variable name="iconData" value="{
+                                    icon:icon,
+                                    isFullColor: iconFullColor}"/>
+                                <f:render partial="Atoms/Icon" arguments="{data:iconData}"/>
+                            </span>
+                        </f:if>
+                    </f:else>
+                </f:if>
+                <f:if condition="{linkAfterIcon}">
+                    <span slot="after">
+                        <f:variable name="iconData" value="{
+                            icon:linkAfterIcon,
+                            isFullColor: iconFullColor}"/>
+                        <f:render partial="Atoms/Icon" arguments="{data:iconData}"/>
+                    </span>
+                </f:if>
+                <f:comment>
+                    <span class="{f:if(condition:'{level}==0', then:'text-nowrap')}" slot="after" style="-webkit-mask: url({icon}) no-repeat center / contain;"></span>
+                </f:comment>
+            </atomic-button>
+        </a>
+    </f:section>
+
+
+    <f:section name="IconLink">
+        <a href="{link}" class="pl-nav-link -l{level} d-flex align-items-center" slot="click-element" title="{link}">
+            <f:variable name="iconData" value="{
+                icon:icon,
+                isFullColor: iconFullColor,
+                width:theme.sub0navigation.icon.width,
+                height:theme.subnavigation.icon.height}"/>
+            <f:render partial="Atoms/Icon" arguments="{data:iconData}"/>
+        </a>
+    </f:section>
+</fluid>

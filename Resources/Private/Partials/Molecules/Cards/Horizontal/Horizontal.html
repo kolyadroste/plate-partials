@@ -1,0 +1,176 @@
+<fluid
+        data-namespace-typo3-fluid="true"
+        xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+        xmlns:plp="http://typo3.org/ns/Plate/PlatePartials/ViewHelpers"
+>
+    <f:comment>
+        item:{
+            uid: number,
+            title: string,
+            layout: string,
+            invertedClass: string
+            description: string,
+            imgConfig: fluidArray,
+            imagePosition: string,
+            imageLayout: string,
+            image: FileReference,
+            images: FileReference,
+            link: integer,
+            target: string
+            date: integer
+        }
+    </f:comment>
+
+    <f:asset.script identifier="atomic-button" type="module" src="EXT:plate_atomic_assets/Resources/Public/Webcomponents/atomic-button.js" priority="1"/>
+    <f:asset.script identifier="atomic-anim-fadein" type="module" src="EXT:plate_atomic_assets/Resources/Public/Webcomponents/atomic-anim-fadein.js" priority="1"/>
+    <f:asset.css identifier="a.width" href="{item.atomicAssets}Styles/atomic/a.width.cmd.css" priority="1"/>
+
+    <f:asset.css identifier="ah.remove-margin-bottom" href="{item.atomicAssets}Styles/helpers/ah.remove-margin-bottom.min.css" priority="1"/>
+    <f:variable name="headerLayout" value="{item.layout}"/>
+    <f:if condition="{!headerLayout}">
+        <f:variable name="headerLayout" value="2"/>
+    </f:if>
+    <f:switch expression="{item.textBackground}">
+        <f:case value="vars-dark">
+            <f:asset.css identifier="vars.dark" href="{item.atomicAssets}Styles/vars.dark.css" priority="1"/>
+        </f:case>
+        <f:case value="vars-dark">
+            <f:asset.css identifier="vars.dark" href="{item.atomicAssets}Styles/vars.dark.css" priority="1"/>
+        </f:case>
+        <f:case value="vars-highlighted"><f:asset.css identifier="vars.highlighted" href="{item.atomicAssets}Styles/vars.highlighted.css" priority="1"/></f:case>
+        <f:defaultCase>
+            <f:asset.css identifier="vars.important" href="{item.atomicAssets}Styles/vars.important.css" priority="1"/>
+        </f:defaultCase>
+    </f:switch>
+
+    <article style="container: container / inline-size"  id="article-{item.uid}" class="plate-card plate-card-horizontal {item.textBackground}">
+        <f:if condition="{item.link}">
+            <f:then>
+                <a href="{item.link}" target="{f:if(condition: 'item.target',then:item.target,else:'_self')}" title="Go to page {item.title}">
+                    <f:render section="Contents" arguments="{_all}"/>
+                </a>
+            </f:then>
+            <f:else>
+                <f:render section="Contents" arguments="{_all}"/>
+            </f:else>
+        </f:if>
+    </article>
+
+
+    <f:section name="Contents">
+
+        <f:variable name="textVAlign" value="align-items::{item.textVAlign}"/>
+
+        <div class="a-background a-box-shadow csm(a-display::flex) mdd(a-flex-direction::column) contents {textVAlign} {f:if(condition:'{item.imagePosition}==\'right\'',then:'sm(a-flex-direction::row-reverse)')}" style="{textFrameColor -> f:if(condition:'{item.textFillMode}==\'full\'')}">
+            <f:variable name="textColWidth" value="66%"/>
+            <f:variable name="imageColWidth" value="33%"/>
+            <f:if condition="!{item.showImage}">
+                <f:variable name="textColWidth" value="12"/>
+            </f:if>
+
+            <f:render section="Image" arguments="{_all}"/>
+            <f:render section="Icon" arguments="{_all}"/>
+
+            <f:if condition="{item.textFrameWidth} == 'ce-frame-default'">
+                <f:variable name="textFrameStyle" value='max-width:100%;'/>
+            </f:if>
+            <div class="a-width::100% cmd(a-width::{textColWidth})" style="{textFrameColor -> f:if(condition:'{item.textFillMode}==\'separated\'')}">
+                <div class="text-inner-width" style="{textFrameStyle} {f:if(condition:'{item.imagePosition}==\'left\'',then:'margin-right:auto;',else:'margin-left:auto;')} {textFrameColor -> f:if(condition:'{item.textFillMode}==\'content-area\'')}">
+                    <div class="text-inner-wrap a-padding::big ah-remove-margin-bottom::last-child">
+                        <f:render section="TextContent" arguments="{_all}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:section>
+
+    <f:section name="Image">
+        <f:if condition="{item.images ->f:count()}  && {settings.hideImage} != 1">
+            <f:if condition="{item.imgConfig}">
+                <f:variable name="imgConfig" value="{item.imgConfig}"/>
+            </f:if>
+            <f:if condition="!{imgConfig}">
+                <f:variable name="imgConfig" value="{
+                    300:{w:400,cropVariant:'mobile'},
+                    400:{w:400,cropVariant:'mobile'},
+                    500:{w:500,cropVariant:'mobile'},
+                    600:{w:500,cropVariant:'mobile'},
+                    1000:{w:300,cropVariant:'default'},
+                    1200:{w:300,cropVariant:'default'},
+                    1400:{w:400,cropVariant:'default'},
+                    1600:{w:400,cropVariant:'default'}
+                }"/>
+            </f:if>
+            <f:variable name="data" value="{
+                    image:item.images.0,
+                    config:imgConfig,
+                    style:'position:absolute;object-fit:cover;width:100%;height:100%'
+            }"/>
+            <div class="a-position::relative; a-width::100% cmd(a-width::50%) clg(a-width::{imageColWidth})">
+                <f:asset.script identifier="atomic-anim-fadein" type="module" src="EXT:plate_atomic_assets/Resources/Public/Webcomponents/atomic-anim-fadein.js" priority="1"/>
+                <atomic-anim-fadein class="a-position::relative a-height::100% anim-component" fadeIn inViewStart style="min-height:200px">
+                    <f:render partial="Atoms/Image" arguments="{data:data}"/>
+                </atomic-anim-fadein>
+            </div>
+        </f:if>
+    </f:section>
+
+    <f:section name="Icon">
+        <f:if condition="{item.iconInverted}">
+            <f:variable name="style" value='filter: invert(1)'/>
+        </f:if>
+        <f:if condition="{item.icon}">
+
+            <div class="cmd(a-width::{imageColWidth}) a-display::flex a-justify-content::center" style="min-height:100px; {style}">
+                <f:if condition="{item.animationImage}">
+                    <f:then>
+                        <f:asset.script identifier="atomic-anim-fadein" type="module" src="EXT:plate_atomic_assets/Resources/Public/Webcomponents/atomic-anim-fadein.js" priority="1"/>
+                        <atomic-anim-fadein class="anim-component" fadeIn inViewStart>
+                            <plp:icon icon="{item.icon}" maxW="{item.iconWidth}"/>
+                        </atomic-anim-fadein>
+                    </f:then>
+                    <f:else>
+                        <plp:icon icon="{item.icon}" maxW="{item.iconWidth}"/>
+                    </f:else>
+                </f:if>
+            </div>
+        </f:if>
+    </f:section>
+
+    <f:section name="TextContent">
+        <f:if condition="{item.animationText}">
+            <f:then>
+                <f:asset.script identifier="atomic-anim-fadein" type="module" src="EXT:plate_atomic_assets/Resources/Public/Webcomponents/atomic-anim-fadein.js" priority="1"/>
+                <atomic-anim-fadein class="anim-component" fadeIn inViewStart>
+                    <f:render section="TextContentInner" arguments="{_all}"/>
+                </atomic-anim-fadein>
+            </f:then>
+            <f:else>
+                <f:render section="TextContentInner" arguments="{_all}"/>
+            </f:else>
+        </f:if>
+    </f:section>
+    <f:section name="TextContentInner">
+        <f:if condition="{item.dataTitle}">
+            <f:render
+                    partial="Header/All"
+                    arguments="{data:item.dataTitle}"
+            />
+        </f:if>
+
+        <f:if condition="{item.date}">
+            <f:render
+                    partial="Date"
+                    arguments="{date:item.date,iconPath:'EXT:plate_ces/Resources/Public/'}"
+            />
+        </f:if>
+        <f:if condition="{item.description}">
+            <f:format.html>{item.description}</f:format.html>
+        </f:if>
+        <f:if condition="{item.showButton}">
+            <atomic-button>
+                {f:if(condition: '{item.buttonName}', then:'{item.buttonName}',else:'Mehr')}
+            </atomic-button>
+        </f:if>
+    </f:section>
+</fluid>

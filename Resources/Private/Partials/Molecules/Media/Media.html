@@ -1,0 +1,59 @@
+<fluid xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+    <f:comment><!--
+        data{
+            type: (string) image, video
+            media: (fal object),
+            imgConfig: (array) {
+                500:{w:400,cropVariant:'mobile'},
+                400:{w:400,cropVariant:'mobile'},
+                300:{w:400,cropVariant:'mobile'}
+            },
+            lazyLoading,
+            maxWidth,
+            maxHeight,
+            imgClasses
+        }
+    --></f:comment>
+
+    <f:if condition="{data} && {data.media}">
+        <f:variable name="maxWidth" value="500"/>
+        <f:if condition="{data} && {data.media} && {data.media.maxWidth}">
+            <f:variable name="maxWidth" value="{data.media.maxWidth}"/>
+        </f:if>
+
+        <f:variable name="maxHeight" value="400"/>
+        <f:if condition="{data} && {data.media} && {data.media.maxHeight}">
+            <f:variable name="maxHeight" value="{data.media.maxHeight}"/>
+        </f:if>
+
+        <f:variable name="lazyLoading" value="lazy"/>
+        <f:if condition="{data} && {data.media} && {data.media.lazyLoading}">
+            <f:variable name="lazyLoading" value="{data.media.lazyLoading}"/>
+        </f:if>
+
+        <f:if condition="{data.type} == 'image'">
+            <f:variable name="imgConfig" value="{data.imgConfig}"/>
+            <f:if condition="!{data.imgConfig}">
+                <f:variable name="imgConfig" value="{
+                    500:{w:400,cropVariant:'mobile'},
+                    400:{w:400,cropVariant:'mobile'},
+                    300:{w:400,cropVariant:'mobile'}
+                }"/>
+            </f:if>
+            <f:variable name="imageData" value="{
+                image: data.media,
+                config: imgConfig,
+                additionalClasses: 'w-100 {imgClasses}'
+            }"/>
+            <f:render partial="Atoms/Image" arguments="{data: imageData}"/>
+        </f:if>
+        <f:if condition="{data.type} == 'video'">
+            <f:render partial="Atoms/Video" arguments="{data: data.media}"/>
+        </f:if>
+    </f:if>
+
+    <f:if condition="!{data}">
+        No Media Data given
+    </f:if>
+</fluid>

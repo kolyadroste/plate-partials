@@ -1,0 +1,28 @@
+<fluid
+        data-namespace-typo3-fluid="true"
+        xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+        xmlns:ap="http://typo3.org/ns/Atomicplan/PlatePartials/ViewHelpers"
+>
+    <f:comment>
+        <!--
+            data{
+               uid (required)
+               text (required)
+            }
+         -->
+    </f:comment>
+    <f:if condition="{data} && {data.text}">
+        <f:variable name="atomicBs" value="EXT:plate_atomic_assets/Resources/Public/atomic-bootstrap/Dist"/>
+        <f:asset.css identifier="bs.button" href="{atomicBs}/components/buttons.css"/>
+        <ap:ifExtInstalled extensionKey="frontend_editing">
+            <f:then>
+                <f:render partial="Atoms/FeEdit/RichText" arguments="{data:{text:data.text,uid:data.uid},settings:settings}"/>
+            </f:then>
+            <f:else>
+                <f:format.html>{data.text}</f:format.html>
+            </f:else>
+        </ap:ifExtInstalled>
+    </f:if>
+</fluid>
+
+

@@ -1,0 +1,9 @@
+<fluid
+        data-namespace-typo3-fluid="true"
+        xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+        xmlns:core="http://typo3.org/ns/TYPO3/CMS/FrontendEditing/ViewHelpers"
+>
+    <core:contentEditable table="{settings.feEditing.text.table}" field="{settings.feEditing.text.descriptionField}" uid="{data.uid}">
+        <f:format.html>{data.text}</f:format.html>
+    </core:contentEditable>
+</fluid>

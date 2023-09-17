@@ -1,0 +1,103 @@
+<html
+        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        data-namespace-typo3-fluid="true"
+>
+    <f:comment><!--
+        data{
+            uid
+            title
+            text
+            link (string)
+            target (string, link target)
+            image (string)
+            imageOverlay (html)
+            smallText
+            target (_blank or Null)
+            date
+            content: (HTML, must be given as partial content)
+        }
+    --></f:comment>
+    <f:if condition="{data}">
+        <f:asset.css identifier="mol.cards.simpleVertical" href="EXT:plate_partials/Resources/Public/Styles/Molecules/Cards/SimpleVertical/style.css" />
+
+        {f:variable(name:'target',value:'target="_self"')}
+        <f:if condition="{data.target}">
+            {f:variable(name:'target',value:'target="{data.target}"')}
+        </f:if>
+        <f:if condition="!{data.cropLength}">
+            <f:variable name="cropLength" value="120"/>
+        </f:if>
+        <article molCardSimpleVertical class="card" style="height:inherit">
+            <f:if condition="{data.link}">
+                <f:then>
+                    <a href="{data.link}" class="result-item-link {data.linkClasses}"  {target} style="display:block;">
+                        <f:render section="cardContent" arguments="{_all}"/>
+                    </a>
+                </f:then>
+                <f:else>
+                    <f:render section="cardContent" arguments="{_all}"/>
+                </f:else>
+            </f:if>
+        </article>
+    </f:if>
+
+    <f:section name="cardContent">
+        <section class="card-image-wrapper uid{data.uid}">
+            <div class="card-image">
+                <f:variable name="imageData" value="{
+                    image: data.image,
+                    alt: data.title,
+                    title: data.title,
+                    config:{
+                        300:{w:400,cropVariant:'mobile'},
+                        500:{w:500,cropVariant:'mobile'},
+                        950:{w:400,cropVariant:'desktop'}
+                    },
+                    additionalClasses: ' w-100 h-100 absolute'
+                }"/>
+                <f:render partial='Atoms/Image'arguments="{data:imageData}"  />
+            </div>
+            <f:if condition="{data.imageOverlay}">
+                <div class="image-overlay">
+                    {data.imageOverlay->f:format.raw()}
+                </div>
+            </f:if>
+        </section>
+        <section class="card-content p-small">
+            <f:if condition="{content}">
+                <f:then>{content->f:format.raw()}</f:then>
+                <f:else><f:render section="TextSection" arguments="{_all}"/></f:else>
+            </f:if>
+        </section>
+    </f:section>
+
+    <f:section name="TextSection">
+        <f:render partial="Atoms/Title" arguments="{data:'{
+                title:data.title,
+                tag:\'h3\',
+                additionalClass:\'title h2\'
+            }'}"/>
+        <f:if condition="{data.dateperiod}">
+            <f:render partial="Atoms/DatePeriod" arguments="{data:data}"/>
+        </f:if>
+        <f:if condition="{data.date}">
+            <f:variable name="dateData" value="{
+                    date:data.date,
+                    format:data.dateFormat
+                }"/>
+            <f:render partial="Atoms/Date" arguments="{data:dateData}"/>
+        </f:if>
+        <f:render partial="Atoms/Paragraph" arguments="{
+                text:data.description,
+                cropLength: 120,
+                allowedTags:'bold'
+            }"/>
+    </f:section>
+</html>
+
+
+
+
+
+
+

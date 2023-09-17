@@ -1,0 +1,25 @@
+<fluid
+        data-namespace-typo3-fluid="true"
+        xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers"
+        xmlns:core="http://typo3.org/ns/TYPO3/CMS/FrontendEditing/ViewHelpers"
+        xmlns:ap="http://typo3.org/ns/Atomicplan/PlatePartials/ViewHelpers"
+>
+    <f:comment>
+        <!--data:
+            contentFrame: '' (default:'container'),
+            hoverText: '' (default:'Beschreibung schließen'),
+        }-->
+    </f:comment>
+    <f:if condition="!{data}">
+        <f:variable name="data" value="{
+            contentFrame: 'container',
+            hoverText: ''
+        }"/>
+    </f:if>
+    <f:asset.script identifier="atomic-overlay" type="module" src="EXT:plate_atomic_assets/Resources/Public/Webcomponents/Dist/atomic-overlay.js" priority="1"/>
+    <atomic-overlay>
+        <div slot="hover">{data.hoverText}</div>
+        {content -> f:format.raw()}
+    </atomic-overlay>
+
+</fluid>

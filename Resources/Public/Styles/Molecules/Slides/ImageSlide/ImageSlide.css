@@ -1,0 +1,91 @@
+:root{
+    --atomic-overlay-background: none;
+    --atomic-overlay-color: white;
+    --atomic-overlay-text-halign: flex-start;
+    --atomic-overlay-text-valign: flex-end;
+    --atomic-overlay-padding: 0;
+}
+.ah-richtext *:last-child {
+    margin-bottom: 0;
+}
+.imageBlur{
+    position: absolute;
+    width:100%;
+    height:100%;
+    z-index:1;
+    backdrop-filter: blur(10px);
+}
+ atomic-slide.as-default .ah-richtext *{
+    text-shadow: var(--image-slide-text-shadow, #0b2a26 0px 0px 10px);
+}
+atomic-slide img{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-position: var(--image-slide-object-position-x, center) var(--image-slide-object-position-y, center);
+}
+atomic-slide{
+    --atomic-overlay-figcaption-padding: 0;
+}
+atomic-slide .container-fluid{
+    --bs-gutter-x: 100px;
+}
+atomic-slide.as-bg{
+    --atomic-overlay-background: var(--atomic-slide-overlay-bg, white);
+    --atomic-overlay-figcaption-padding: var(--bs-gap-xlarge);
+    --atomic-overlay-color: var(--bs-primary);
+}
+atomic-overlay{
+    --atomic-overlay-padding-top: var(--bs-gap-large);
+    --atomic-overlay-padding-bottom: var(--bs-gap-large);
+}
+atomic-overlay.large,
+atomic-overlay.xlarge{
+    --atomic-overlay-padding-top: var(--bs-gap-xlarge);
+    --atomic-overlay-padding-bottom: var(--bs-gap-xlarge);
+}
+
+atomic-slide[containered] atomic-overlay.large{
+    --atomic-overlay-figcaption-padding: var(--bs-gap-medium);
+    --atomic-overlay-padding-top: var(--bs-gap-medium);
+    --atomic-overlay-padding-bottom: var(--bs-gap-medium);
+}
+
+atomic-slide.as-center-center{
+    --atomic-overlay-text-halign: center;
+    --atomic-overlay-text-valign: center;
+}
+atomic-slide.as-center-top{
+    --atomic-overlay-text-halign: center;
+    --atomic-overlay-text-valign: flex-start;
+}
+atomic-slide.as-center-bottom{
+    --atomic-overlay-text-halign: center;
+    --atomic-overlay-text-valign: flex-end;
+}
+
+atomic-slide.as-left-top{
+    --atomic-overlay-text-halign: flex-start;
+    --atomic-overlay-text-valign: flex-start;
+}
+atomic-slide.as-left-center{
+    --atomic-overlay-text-halign: flex-start;
+    --atomic-overlay-text-valign: center;
+}
+atomic-slide.as-left-bottom{
+    --atomic-overlay-text-halign: flex-start;
+    --atomic-overlay-text-valign: flex-end;
+}
+
+atomic-slide.as-right-center{
+    --atomic-overlay-text-halign: flex-end;
+    --atomic-overlay-text-valign: center;
+}
+atomic-slide.as-right-top{
+    --atomic-overlay-text-halign: flex-end;
+    --atomic-overlay-text-valign: flex-start;
+}
+atomic-slide.as-right-bottom{
+    --atomic-overlay-text-halign: flex-end;
+    --atomic-overlay-text-valign: flex-end;
+}

@@ -1,0 +1,42 @@
+<f:comment>
+    <!--
+        data{
+           text (string)
+           cropLength (number)
+           nl2br (bool)
+           classes (string)
+        }
+     -->
+</f:comment>
+
+<f:if condition="{data}">
+    <f:if condition="{data.text}">
+        <f:if condition="{data.cropLength}">
+            <f:then>
+                <f:format.crop maxCharacters="{data.cropLength}">
+                    <f:render section="text" arguments="{_all}"/>
+                </f:format.crop>
+            </f:then>
+            <f:else>
+                <f:render section="text" arguments="{_all}"/>
+            </f:else>
+        </f:if>
+    </f:if>
+</f:if>
+
+<f:section name="text">
+    <p {f:if(condition:'{classes}',then:'class="{classes}"')}>
+        <f:if condition="{data.nl2br}">
+            <f:then>
+                <f:format.nl2br><f:format.stripTags><f:format.raw>{data.text}</f:format.raw></f:format.stripTags></f:format.nl2br>
+            </f:then>
+            <f:else>
+                <f:format.stripTags>
+                    <f:format.raw>{data.text}</f:format.raw>
+                </f:format.stripTags>
+            </f:else>
+        </f:if>
+    </p>
+</f:section>
+
+
