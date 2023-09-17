@@ -3,6 +3,8 @@
     "version": "0.5.0",
     "type": "typo3-cms-extension",
     "description": "provides fluid partials for generic use, partials are sorted in a atomic structure",
+    "license": "GPL-2.0-or-later",
+    "keywords": ["TYPO3 CMS", "Integrators", "Site Extension", "Site Package", "TypoScript"],
     "authors": [
         {
             "name": "Kolya von Droste zu Vischering",
@@ -10,19 +12,24 @@
         }
     ],
     "require": {
+        "php": "^7.4 || ^8.0",
+        "typo3/cms-core": "^11.0 || ^12.0",
         "atomicplan/plate-atomic-assets": "^0.5"
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "plate_ces"
+        }
     },
     "autoload": {
         "psr-4": {
             "Atomicplan\\PlatePartials\\": "Classes/"
         }
     },
-    "replace": {
-        "typo3-ter/atomicplan/plate-partials": "self.version"
+    "require-dev": {
+
     },
-    "extra": {
-        "typo3/cms": {
-            "extension-key": "plate_partials"
-        }
+    "config": {
+        "sort-packages": true
     }
 }
