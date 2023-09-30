@@ -9,7 +9,7 @@
     <f:asset.script identifier="atomic.button" type="module" src="{atomicAssets}/Webcomponents/atomic-button.js"/>
     <f:asset.css identifier="bs.utilities.base"  href="{atomicAssets}/atomic-bootstrap/Dist/utilities/utilities.base.css" priority="1"/>
     <f:asset.css identifier="bs.plate-nav"  href="{public}/Styles/Components/plate-nav.css" priority="1"/>
-    <nav class="pl-nav -vertical">
+    <nav accordionNav class="pl-nav -vertical">
         <ul style="list-style-type: none;" class="p-0">
             <f:for each="{data.nav}" as="entry" iteration="i">
                 <f:variable name="title" value="{entry.title}"/>
@@ -71,6 +71,7 @@
     <f:section name="SubpagesGrid">
         <f:variable name="level" value="{level + 1}"/>
         <f:asset.css identifier="bs.grid-flex" href="EXT:plate_atomic_assets/Resources/Public/atomic-bootstrap/Dist/components/grid-flex.css"/>
+        <f:asset.css identifier="partials.accordion-nav" href="EXT:plate_partials/Resources/Public/Styles/Molecules/Navigation/AccordionNav.css"/>
 
         <f:variable name="numSubpages" value="{entry.subpages->f:count()}"/>
         <f:variable name="numSubpagesPerColumn" value="{numSubpages / 2}"/>

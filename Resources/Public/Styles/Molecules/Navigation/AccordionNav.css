@@ -1,1 +1,10 @@
-.ac-subnav-grid
+nav[accordionNav] .pl-subnav-grid{
+    width:100% !important;
+}
+nav[accordionNav] atomic-dropdown::part(list){
+    padding: 0px 20px 30px 30px;
+}
+nav[accordionNav] atomic-dropdown::part(list-inner){
+    padding: 20px 0px 20px 20px;
+    background-color: var(--pl-accn-dropdown-bgcolor,#f5f5f5);
+}

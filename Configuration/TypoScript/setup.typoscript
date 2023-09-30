@@ -1,6 +1,12 @@
 page{
-    includeJS{
-        container_query_polyfill = EXT:plate_atomic_assets/Resources/Public/node_modules/container-query-polyfill/dist/container-query-polyfill.modern.js
+    headerData{
+        1696004200 = FLUIDTEMPLATE
+        1696004200{
+            file = EXT:plate_partials/Resources/Private/Templates/Page/Head/HtmlHead.html
+            templateRootPaths {
+                10 = EXT:plate_partials/Resources/Private/Templates/
+            }
+        }
     }
 }
 lib.contentElement{

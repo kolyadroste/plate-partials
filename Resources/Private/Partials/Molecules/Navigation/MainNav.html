@@ -75,7 +75,7 @@
         <f:comment>
             <f:variable name="icon" value="{f:uri.resource(path:'EXT:core/Resources/Public/Icons/T3Icons/svgs/actions/actions-chevron-down.svg')}"/>
         </f:comment>
-        <f:if condition="{entry.subpages->f:count() > 6}">
+        <f:if condition="{entry.subpages->f:count()} > 6">
             <f:variable name="isMegamenu" value="1"/>
         </f:if>
         <atomic-dropdown openOnHover {open-state} style="{f:if(condition:isMegamenu,then:'--atomic-dropdown-slidewrapper-translatex:-50%;')}">

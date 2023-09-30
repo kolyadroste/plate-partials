@@ -18,6 +18,11 @@
     <f:asset.css identifier="platePartials.ImageSlide" href="EXT:plate_partials/Resources/Public/Styles/Molecules/Slides/ImageSlide/ImageSlide.css" />
     <f:if condition="{data.image}">
         <f:variable name="vars" value=""/>
+
+        <f:variable name="blendTime" value="1000ß"/>
+        <f:if condition="{data.globalBlendTime}"><f:variable name="blendTime" value="{data.globalBlendTime}"/></f:if>
+        <f:if condition="{data.currBlendTime}"><f:variable name="blendTime" value="{data.currBlendTime}"/></f:if>
+
         <f:if condition="{data.textLayout}">
             <f:variable name="vars" value="{data.textLayout}"/>
         </f:if>
@@ -31,7 +36,7 @@
            </f:case>
            <f:defaultCase><f:variable name="imageFilter" value=""/></f:defaultCase>
         </f:switch>
-        <atomic-slide {imageFilter} {f:if(condition:data.blurImage, then:'imageBlur')} inViewObjection id="atomic-slide-{data.uid}" class="{layout}" time="10000">
+        <atomic-slide {imageFilter} {f:if(condition:data.blurImage, then:'imageBlur')} inViewObjection id="atomic-slide-{data.uid}" class="{layout}" time="{blendTime}">
             <f:if condition="{data.image}">
                 <f:if condition="{data.imageConfig}">
                     <f:if condition="{data.imageConfig}">

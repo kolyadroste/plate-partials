@@ -1,0 +1,20 @@
+<fluid data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+    <f:variable name="container-query-polyfill" value="EXT:plate_partials/Resources/Public/Lib/container-query-polyfill.modern.js" />
+    <script type="application/javascript" defer>
+        // load container query polyfill if needed
+        (function () {
+            var supportsContainerQueries = window.CSS && CSS.supports && CSS.supports("(container-type: block)");
+
+            function isScriptAlreadyLoaded(src) {
+                return document.querySelector('script[src="' + src + '"]') !== null;
+            }
+
+            var scriptSrc = "<f:format.raw>{f:uri.resource(path:'{container-query-polyfill}')}</f:format.raw>";
+            if (!supportsContainerQueries && !isScriptAlreadyLoaded(scriptSrc)) {
+                var script = document.createElement("script");
+                script.src = scriptSrc;
+                document.head.appendChild(script);
+            }
+        })();
+    </script>
+</fluid>
