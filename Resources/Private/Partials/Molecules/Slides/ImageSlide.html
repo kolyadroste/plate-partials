@@ -5,15 +5,17 @@
     <f:asset.script identifier="atomic-slide" type="module" src="{atomicAssets}Webcomponents/Dist/atomic-slide.min.js" priority="1"/>
     <f:asset.script identifier="atomic-close" type="module" src="{atomicAssets}Webcomponents/Dist/atomic-close.min.js" priority="1"/>
     <f:asset.script identifier="atomic-slide-observer">
-        <f:format.raw>let slides = document.querySelectorAll("atomic-slide[inViewObjection]")</f:format.raw>
-        slides.forEach((slide)=>{
-            slide.addEventListener('atomic-slide.isInView', ()=>{
-            let overlay = slide.querySelector('atomic-overlay');
-                if(overlay){
-                    overlay.classList.add('isInView');
-                }
+        <f:format.raw>
+            let slides = document.querySelectorAll("atomic-slide[inViewObjection]");
+            slides.forEach((slide)=>{
+                slide.addEventListener('atomic-slide.isInView', ()=>{
+                let overlay = slide.querySelector('atomic-overlay');
+                    if(overlay){
+                        overlay.classList.add('isInView');
+                    }
+                });
             });
-        });
+        </f:format.raw>
     </f:asset.script>
     <f:asset.css identifier="platePartials.ImageSlide" href="EXT:plate_partials/Resources/Public/Styles/Molecules/Slides/ImageSlide/ImageSlide.css" />
     <f:if condition="{data.image}">
