@@ -15,7 +15,7 @@
     <f:if condition="{data.format}">
         <f:variable name="format" value="{data.format}"/>
     </f:if>
-    <span dateTimeInfo class="d-flex">
+    <span dateTimeInfo class="d-flex {data.additionalClasses}">
             <span class="date"><f:format.date format="{format}">{data.date}</f:format.date></span>
     </span>
 </f:if>
