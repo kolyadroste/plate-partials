@@ -5,19 +5,20 @@
     <f:comment>
         {
             data:{
-                icon: 'string',
-                width: 'int',
-                height: 'int',
-                isFullColor: 'bool',
-                title: 'string',
-                alt: 'string'
+            icon: 'string',
+            width: 'int',
+            height: 'int',
+            isFullColor: 'bool',
+            title: 'string',
+            alt: 'string',
+            additionalClasses: 'string'
             }
         }
     </f:comment>
     <f:if condition="{data} && {data.icon}">
         <f:variable name="iconUri" value="{f:uri.resource(path:data.icon)}"/>
 
-        <figure class="d-flex" style="margin:0 5px">
+        <figure class="d-flex {data.additionalClasses}" style="margin:0 5px">
             <f:variable name="width" value="20"/>
             <f:if condition="{data.width}"><f:variable name="width" value="{data.width}"/></f:if>
             <f:variable name="height" value="20"/>
