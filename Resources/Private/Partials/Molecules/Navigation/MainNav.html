@@ -80,7 +80,7 @@
             <f:variable name="isMegamenu" value="1"/>
         </f:if>
         <atomic-dropdown openOnHover {open-state} style="{f:if(condition:isMegamenu,then:'--atomic-dropdown-slidewrapper-translatex:-50%;')}">
-            <f:render section="Link" arguments="{data:data,uid:entry.uid, level:level, title:title, linkAfterIcon:data.dropdownIcon}"/>
+            <f:render section="Link" arguments="{data:data,uid:entry.uid, level:level, title:title, linkAfterIcon:data.dropdownIcon, buttonType:data.l0ButtonType}"/>
             <f:if condition="{isMegamenu}">
                 <f:then>
                     <f:render section="SubpagesGrid" arguments="{_all}"/>
@@ -99,7 +99,7 @@
                 <f:variable name="title" value="{entry.title}"/>
                 <f:if condition="{entry.nav_title}"><f:variable name="title" value="{entry.nav_title}"/></f:if>
                 <li class="pl-nav-entry -l{level}">
-                    <f:render section="Link" arguments="{data:data,uid:entry.uid, level:level, title:title, icon:entry.tx_bwicons_icon, iconFullColor:entry.plate_icon_fullcolor}"/>
+                    <f:render section="Link" arguments="{data:data,uid:entry.uid, level:level, title:title, icon:entry.tx_bwicons_icon, iconFullColor:entry.plate_icon_fullcolor"/>
                 </li>
             </f:for>
         </ul>
@@ -141,7 +141,7 @@
     <f:section name="Link">
         <f:variable name="link" value="{f:uri.page(pageUid:uid)}"/>
         <a href="{link}" class="pl-nav-link -l{level} d-block" slot="click-element" title="{link}">
-            <atomic-button {data.l{level}ButtonType}>
+            <atomic-button>
                 <span class="{f:if(condition:'{level}==0', then:'text-nowrap')}">{title}</span>
                 <f:if condition="{data.showL1Thumbnails}">
                     <f:then>
