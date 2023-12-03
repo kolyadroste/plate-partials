@@ -33,9 +33,9 @@
             <f:variable name="absolute" value='{data.absolute}'/>
         </f:if>
 
-        <f:variable name="loading" value='loading=lazy'/>
+        <f:variable name="loading" value='lazy'/>
         <f:if condition="{data.loading}">
-            <f:variable name="loading" value='loading={data.loading}'/>
+            <f:variable name="loading" value='{data.loading}'/>
         </f:if>
         <f:if condition="{data.loading} == 'false'">
             <f:variable name="loading" value='loading=false'/>
@@ -63,17 +63,18 @@
                     <f:if condition="{data.image.properties} && {data.image.properties.extension}">
                         <f:variable name="fileExtension" value="{data.image.properties.extension}"/>
                     </f:if>
-                    <source media="(min-width:{breakpoint}px)" srcset="{f:uri.image(fileExtension:fileExtension,image: image, cropVariant: dims.cropVariant, minWidth: dims.w, width: dims.w, height: dims.h, absolute:absolute)}" type="image/{fileExtension}">
+                    <source media="(min-width:{breakpoint}px)" srcset="{f:uri.image(fileExtension:fileExtension,image: image, cropVariant: dims.cropVariant, minWidth:dims.w, width:dims.w, height: dims.h, absolute:absolute)}" type="image/{fileExtension}">
                     <f:comment>
                         <!-- webp current not, because solved with ext: plan2net/webp
                           <source media="(min-width:{breakpoint}px)" srcset="{f:uri.image(fileExtension:'webp',image: image, cropVariant: dims.cropVariant, minWidth: dims.w, width: dims.w, height: dims.h, absolute:absolute)}" type="image/webp">
                          -->
                     </f:comment>
                     <f:if condition="{i.isLast}">
-                        <f:variable name="defaultSrc" value="{f:uri.image(fileExtension:'jpeg', image: image, cropVariant: dims.cropVariant, minWidth: dims.w, width: dims.w, height: dims.h, absolute:absolute)}"/>
+                        <f:variable name="defaultSrc" value="{f:uri.image(fileExtension:'jpeg', image: image, cropVariant: dims.cropVariant, minWidth:dims.w, width:dims.w, height: dims.h, absolute:absolute)}"/>
                     </f:if>
                     <f:if condition="{i.isLast}">
                         <f:image image="{image}" alt="{data.alt}" title="{data.title}" width="{dims.w}" height="{dims.h}"
+                                 loading="{loading}"
                                  class="{f:if(condition:data.additionalClasses,then:data.additionalClasses)}"
                                  additionalAttributes="{style:data.style,draggable:data.draggable}"/>
                     </f:if>
