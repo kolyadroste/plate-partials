@@ -1,14 +1,3 @@
-page{
-    headerData{
-        1696004200 = FLUIDTEMPLATE
-        1696004200{
-            file = EXT:plate_partials/Resources/Private/Templates/Page/Head/HtmlHead.html
-            templateRootPaths {
-                10 = EXT:plate_partials/Resources/Private/Templates/
-            }
-        }
-    }
-}
 lib.contentElement{
     partialRootPaths{
         1684544902 = EXT:plate_atomic_assets/Resources/Private/Partials/
